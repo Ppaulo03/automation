@@ -1,53 +1,49 @@
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 
 
 firefox_browser = webdriver.Firefox()
 
-firefox_browser.maximize_window()
-firefox_browser.get(
-    'https://accounts.google.com/signup')
-first_name = firefox_browser.find_element_by_id('firstName')
-last_name = firefox_browser.find_element_by_id('lastName')
-user_name = firefox_browser.find_element_by_id('username')
+def sign_up(name, i=0):
+    first_name = firefox_browser.find_element('id', 'firstName')
+    last_name = firefox_browser.find_element('id', 'lastName')
+    user_name = firefox_browser.find_element('id', 'username')
 
-passoword = firefox_browser.find_element_by_name('Passwd')
-confirm_pass = firefox_browser.find_element_by_name('ConfirmPasswd')
+    passoword = firefox_browser.find_element('name', 'Passwd')
+    confirm_pass = firefox_browser.find_element('name', 'ConfirmPasswd')
 
-next_button = firefox_browser.find_element_by_id('accountDetailsNext')
+    next_button = firefox_browser.find_element('id', 'accountDetailsNext')
 
 
-first_name.clear()
-last_name.clear()
-user_name.clear()
+    first_name.clear()
+    last_name.clear()
+    user_name.clear()
 
-passoword.clear()
-confirm_pass.clear()
+    passoword.clear()
+    confirm_pass.clear()
 
-name = 'anyone'
+    first_name.send_keys("Someone")
+    last_name.send_keys("EveryOne")
+    user_name.send_keys(name)
 
-first_name.send_keys("Someone")
-last_name.send_keys("EveryOne")
-user_name.send_keys(name)
+    passoword.send_keys("Any_thing123")
+    confirm_pass.send_keys("Any_thing123")
 
-passoword.send_keys("Any_thing123")
-confirm_pass.send_keys("Any_thing123")
+    next_button.click()
 
-next_button.click()
-
-while True:
     try:
-
-        user_name.clear()
-        possibilities = firefox_browser.find_elements_by_class_name('uBOgn')
-        name = possibilities[0].get_attribute('data-username')
-        user_name.send_keys(name)
-        next_button.click()
+        phone_number = firefox_browser.find_element('id', 'phoneNumberId')
 
     except Exception:
-        break
+        suggested = firefox_browser.find_element(By.CLASS_NAME, 'oMzjQd').find_elements(By.TAG_NAME, "button")[0]
+        print(suggested.text)
+        suggested.click()
+        next_button.click()
+        phone_number = firefox_browser.find_element('id', 'phoneNumberId')
+        
 
-print(name)
-
-
-firefox_browser.close()
-firefox_browser.quit()
+if __name__ == '__main__':
+    firefox_browser.maximize_window()
+    firefox_browser.get('https://accounts.google.com/signup')
+    sign_up('anyone')
+    
